@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="ltu_actor_graph" type="graph.py" name="graph" args="--run example" />
+</launch>
