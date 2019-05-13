@@ -5,7 +5,6 @@
 #include <ros/ros.h>
 
 static ros::Time last_update;
-static ros::Time start_time;
 static int period;
 
 static void
@@ -13,7 +12,7 @@ twist_cb(const geometry_msgs::Twist &msg)
 {
     ros::Time now = ros::Time::now();
     if ((now - last_update).toSec() < period / 1000.0) return;
-    std::cout << (now - start_time).toSec() << ',' << msg.linear.x << ',' << msg.linear.y << ',' << msg.linear.z << ','
+    std::cout << now.toSec() << ',' << msg.linear.x << ',' << msg.linear.y << ',' << msg.linear.z << ','
               << msg.angular.x << ',' << msg.angular.y << ',' << msg.angular.z << std::endl;
     last_update = now;
 }
@@ -36,7 +35,7 @@ main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    last_update = start_time = ros::Time::now();
+    last_update = ros::Time::now();
 
     ros::Subscriber sub = nh.subscribe(topic, 1, &twist_cb);
     ros::spin();

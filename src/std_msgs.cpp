@@ -25,12 +25,11 @@ main(int argc, char **argv)
 
     ros::Time last_update;
     ros::Time last_print;
-    ros::Time start_time;
     int period;
     std::string topic;
     std::string type;
 
-    last_update = last_print = start_time = ros::Time::now();
+    last_update = last_print = ros::Time::now();
 
     nh.param("period", period, 10);
     if (!nh.getParam("type", type))
@@ -53,8 +52,8 @@ main(int argc, char **argv)
         boost::function<void(const std_msgs::msg_type &)> cb = [&](const std_msgs::msg_type &msg) {                    \
             ros::Time now = ros::Time::now();                                                                          \
             if ((now - last_update).toSec() < period / 1000.0) return;                                                 \
-            last_update = ros::Time::now();                                                                            \
-            std::cout << (now - start_time).toSec() << ',' << msg.access << std::endl;                                 \
+            last_update = now;                                                                            \
+            std::cout << now.toSec() << ',' << msg.access << std::endl;                                 \
         };                                                                                                             \
         ros::Subscriber sub = nh.subscribe<std_msgs::msg_type>(topic, 1, cb);                                          \
         ros::spin();                                                                                                   \
